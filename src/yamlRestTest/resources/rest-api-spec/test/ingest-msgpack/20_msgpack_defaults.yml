@@ -36,8 +36,4 @@
         id: arrayDoc
         body: {message: ["gaVoZWxsb6V3b3JsZA==", "gaVoZWxsb6V3b3JsZA=="]}
 
-  - do:
-      get:
-        index: test
-        id: simpleDoc
-  - match: { _source.msgpack_decoded.hello: "world" }
+

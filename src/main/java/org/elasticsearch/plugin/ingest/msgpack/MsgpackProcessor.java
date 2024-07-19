@@ -34,8 +34,9 @@ public class MsgpackProcessor extends AbstractProcessor {
     @Override
     public IngestDocument execute(IngestDocument ingestDocument) throws Exception {
 
-        Object sourceInput = ingestDocument.getSource().get(input);
-        String inputType = sourceInput.getClass().getSimpleName();
+        // As the plugin support String and String Array automatically,
+        // we guess what type is the input (String or ArrayList)
+        String inputType = ingestDocument.getFieldValue(input, Object.class).getClass().getSimpleName();
 
         switch (inputType) {
             case "String":

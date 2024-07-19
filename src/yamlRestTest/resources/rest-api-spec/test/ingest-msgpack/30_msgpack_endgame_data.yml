@@ -1,0 +1,36 @@
+---
+"Test msgpack processor with defaults":
+  - do:
+      ingest.put_pipeline:
+        id: "endgame_pipeline"
+        body:  >
+          {
+            "description": "_description",
+            "processors": [
+              {
+                "msgpack" : {
+                  "input_field" : "endgame.data.triggering_fact_array.data_buffer"
+                }
+              }
+            ]
+          }
+  - match: { acknowledged: true }
+
+  - do:
+      index:
+        index: test
+        pipeline: "endgame_pipeline"
+        id: simpleDoc
+        body: >
+          {
+            "endgame": {
+              "data": {
+                "triggering_fact_array": {
+                  "data_buffer": [
+                    "gaVoZWxsb6V3b3JsZA==",
+                    "gaVoZWxsb6V3b3JsZA=="
+                  ]
+                }
+              }
+            }
+          }
