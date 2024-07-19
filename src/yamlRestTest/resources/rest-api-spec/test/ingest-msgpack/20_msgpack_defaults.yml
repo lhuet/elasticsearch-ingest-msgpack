@@ -9,7 +9,7 @@
             "processors": [
               {
                 "msgpack" : {
-                  "input_field" : "message"
+                  "field" : "message"
                 }
               }
             ]

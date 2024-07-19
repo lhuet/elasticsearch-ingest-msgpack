@@ -9,7 +9,7 @@
             "processors": [
               {
                 "msgpack" : {
-                  "input_field" : "endgame.data.triggering_fact_array.data_buffer"
+                  "field" : "endgame.data.triggering_fact_array.data_buffer"
                 }
               }
             ]

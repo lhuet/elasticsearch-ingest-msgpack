@@ -191,7 +191,7 @@ public class MsgpackProcessor extends AbstractProcessor {
         @Override
         public Processor create(Map<String, Processor.Factory> processorFactories, String tag, String description, Map<String, Object> config) throws Exception {
             // Input field is mandatory
-            String input = ConfigurationUtils.readStringProperty(TYPE, tag, config, "input_field");
+            String input = ConfigurationUtils.readStringProperty(TYPE, tag, config, "field");
             // Target is optional. If not set, we put the hash value as the document Id
             String target = ConfigurationUtils.readOptionalStringProperty(TYPE, tag, config, "target_field");
             if (target == null) target = "msgpack_decoded";
