@@ -1,0 +1,48 @@
+
+buildscript {
+    repositories {
+        maven {
+            url = 'https://snapshots.elastic.co/maven/'
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.elasticsearch.gradle:build-tools:${elasticsearchVersion}"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'elasticsearch.esplugin'
+apply plugin: 'elasticsearch.yaml-rest-test'
+
+group = 'co.elastic.elasticsearch.ingest.msgpack'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = 17
+    targetCompatibility = 17
+}
+
+yamlRestTest {
+    systemProperty("java.library.path", "/opt/homebrew/lib")
+    systemProperty("java.security.manager", "allow")
+}
+
+dependencies {
+    compileOnly "org.elasticsearch:elasticsearch:${elasticsearchVersion}"
+    compileOnly "org.elasticsearch.plugin:x-pack-core:${elasticsearchVersion}"
+    compileOnly "org.elasticsearch.plugin:elasticsearch-plugin-api:${elasticsearchVersion}"
+    implementation "org.msgpack:msgpack-core:0.9.8"
+    testImplementation "org.elasticsearch.test:framework:${elasticsearchVersion}"
+    testImplementation "org.elasticsearch.test:yaml-rest-runner:${elasticsearchVersion}"
+}
+
+esplugin {
+    name 'ingest-msgpack'
+    description 'Ingest msgpack processor deserializes String msgpack encoded'
+    classname 'org.elasticsearch.plugin.ingest.msgpack.IngestMsgPackPlugin'
+}

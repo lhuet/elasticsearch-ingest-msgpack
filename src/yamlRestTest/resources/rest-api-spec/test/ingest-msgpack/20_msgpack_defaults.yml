@@ -1,0 +1,43 @@
+---
+"Test msgpack processor with defaults":
+  - do:
+      ingest.put_pipeline:
+        id: "defaults_pipeline"
+        body:  >
+          {
+            "description": "_description",
+            "processors": [
+              {
+                "msgpack" : {
+                  "input_field" : "message"
+                }
+              }
+            ]
+          }
+  - match: { acknowledged: true }
+
+  - do:
+      index:
+        index: test
+        pipeline: "defaults_pipeline"
+        id: simpleDoc
+        body: {message: "gaVoZWxsb6V3b3JsZA=="}
+
+  - do:
+      get:
+        index: test
+        id: simpleDoc
+  - match: { _source.msgpack_decoded.hello: "world" }
+
+  - do:
+      index:
+        index: test
+        pipeline: "defaults_pipeline"
+        id: arrayDoc
+        body: {message: ["gaVoZWxsb6V3b3JsZA==", "gaVoZWxsb6V3b3JsZA=="]}
+
+  - do:
+      get:
+        index: test
+        id: simpleDoc
+  - match: { _source.msgpack_decoded.hello: "world" }

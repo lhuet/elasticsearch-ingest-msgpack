@@ -1,0 +1,4 @@
+grant {
+  // Needed for msgpack lib to be able to deserialize to a java bean (by reflection)
+  permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
+};
