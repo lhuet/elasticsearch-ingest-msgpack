@@ -1,24 +1,21 @@
 package org.elasticsearch.plugin.ingest.msgpack;
 
-import org.elasticsearch.index.mapper.ObjectMapper;
 import org.elasticsearch.ingest.AbstractProcessor;
+import org.elasticsearch.ingest.ConfigurationUtils;
 import org.elasticsearch.ingest.IngestDocument;
 import org.elasticsearch.ingest.Processor;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.time.Instant;
-import java.util.*;
-
-import org.elasticsearch.ingest.ConfigurationUtils;
 import org.elasticsearch.xcontent.XContentParser;
 import org.elasticsearch.xcontent.XContentParserConfiguration;
 import org.elasticsearch.xcontent.json.JsonXContent;
 import org.msgpack.core.MessagePack;
 import org.msgpack.core.MessageUnpacker;
-import org.msgpack.value.*;
+import org.msgpack.value.ExtensionValue;
+import org.msgpack.value.Value;
+
+import java.io.IOException;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.*;
 
 public class MsgpackProcessor extends AbstractProcessor {
 
@@ -42,13 +39,11 @@ public class MsgpackProcessor extends AbstractProcessor {
 
         switch (inputType) {
             case "String":
-                System.out.println("String detected");
                 String encodedMessage = ingestDocument.getFieldValue(input, String.class);
                 ingestDocument.setFieldValue(target, fromMsgpackToObject(encodedMessage, inputFormat));
                 break;
 
             case "ArrayList":
-                System.out.println("ArrayList detected");
                 ArrayList<String> encodedMessageList = ingestDocument.getFieldValue(input, ArrayList.class);
                 List<Object> targetResult = new ArrayList<>();
                 for (String encodedMsg : encodedMessageList) {
